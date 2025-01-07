@@ -1178,4 +1178,16 @@ impl<H: AxVCpuHal> AxArchVCpu for VmxVcpu<H> {
     fn set_gpr(&mut self, reg: usize, val: usize) {
         self.regs_mut().set_reg_of_index(reg as u8, val as u64);
     }
+
+    fn get_gpr(&self, reg: usize) -> usize {
+        self.regs().get_reg_of_index(reg as u8) as usize
+    }
+
+    fn get_pc(&self) -> usize {
+        VmcsGuestNW::RIP.read().unwrap()
+    }
+
+    fn set_pc(&mut self, val: usize) {
+        VmcsGuestNW::RIP.write(val).unwrap()
+    }
 }
